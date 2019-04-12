@@ -8,7 +8,7 @@ public class Player : MonoBehaviour
     //Barras De Mascotas
     float healthTo = 500;
     float healthCur = 500;
-
+    
     float happiness=100;
     float happinessCur=100;  
 
@@ -23,7 +23,7 @@ public class Player : MonoBehaviour
     float energyCur = 0;
     
     //Stats de combate
-    int speed, hp, def, atk;
+    int speed, hp, def, atk= 10;
     int maxSpeed, maxHp, maxDef, maxAtk;
     int speedCur, hpCur, defCur, atkCur;
 
@@ -38,7 +38,6 @@ public class Player : MonoBehaviour
 
     void Start ()
     {
-
     }
 
     public void StatsUpdate(float _healt,float _happines,float _hungry,float _energy,float _dirt)
@@ -67,72 +66,44 @@ public class Player : MonoBehaviour
     //{
     //    PlayerPrefs.SetString("LastConnect", DateTime.Now.ToString());
     //}
-    void HealthUp(int healthUp)
+    public void HealthChange(int healthUp)
     {
         healthCur = healthCur + healthUp;
-        if (healthCur > healthTo)
-        {
-            healthCur = healthTo;
-        }
+        healthCur = Mathf.Clamp(healthCur, 0, healthTo);
+        Debug.Log(healthCur);
     }
 
-    public void HungryUp (int hungryUp)
+    public void HungryChange (int hungryUp)
     {
         hungryCur = hungryCur + hungryUp;
-        if (hungryCur > hungry)
-        {
-            hungryCur = hungry;
-            
-        }
+        hungryCur = Mathf.Clamp(hungryCur, 0, hungry);
     }
 
-    public void EnergyUp(int energyUp)
+    public void EnergyChange(int energyUp)
     {
         energyCur = energyCur + energyUp;
-        if (energyCur > energy)
-        {
-            energyCur = energy;
-        }
+        energyCur = Mathf.Clamp(energyCur, 0, energy);
         Debug.Log("holi");
     }
 
-//Enviar estadisticas de combate
-    public int GetAtk()
+    public void HappinesChange(int Happines)
     {
-        return atk;
-    }
-    public int GetHp()
-    {
-        return hp;
-    }
-    public int GetDef()
-    {
-        return def;
-    }
-    public int GetSpeed()
-    {
-        return speed;
+        happinessCur = happinessCur + Happines;
+        happinessCur = Mathf.Clamp(happinessCur, 0, happiness);
     }
 
-//Enviar estadisticas de barras
-    public float GetHealt()
-    {
-        return healthCur;
-    }
-    public float GetEnergy()
-    {
-        return energyCur;
-    }
-    public float GetHungry()
-    {
-        return hungryCur;
-    }
-    public float GetHappines()
-    {
-        return happinessCur;
-    }
-    public float Getdirt()
-    {
-        return dirtCur;
-    }
+
+
+//Enviar estadisticas de combate
+    public int GetAtk {get{ return atk; } }
+    public int GetHp { get { return hp; } }
+    public int GetDef { get { return def; } }
+    public int GetSpeed { get { return speed; } }
+
+    //Enviar estadisticas de barras
+    public float GetHealt { get { return healthCur; } }
+    public float GetEnergy { get { return energyCur; } }
+    public float GetHungry { get { return hungryCur; } }
+    public float GetHappines { get { return happinessCur; } }
+    public float Getdirt { get { return dirtCur; } }
 }

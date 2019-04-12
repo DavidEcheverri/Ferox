@@ -10,7 +10,6 @@ public class UIManagerMain : MonoBehaviour {
     GameObject panelBag;
     GameObject combatButton;
     GameObject bagButton;
-    GameObject fondoFood;
     GameObject optionsButton;
     GameObject buttons;
     GameObject feroxEquip;
@@ -21,11 +20,19 @@ public class UIManagerMain : MonoBehaviour {
     GameObject fruts;
     GameObject drinks;
     GameObject sweets;
-    public GameObject[] arrayFoods = new GameObject[4];
-    GameObject buttonsFoods;
+    GameObject soapsPanel;
+    GameObject foodsPanel;
+    GameObject fondoFood;
+    GameObject fondoSoaps;
+    GameObject soaps;
+    GameObject medicine;
+    public  GameObject loadingPanel;
+    GameObject[] arrayFoods = new GameObject[4];
+    public GameObject[] arraySoaps = new GameObject[2];
+
     int WindowsOpen;
     int footSelec;
-    int numFood;
+    int soapsSelec;
     Text speedText, hpText, defText, atkText;
 
     Player player;
@@ -58,44 +65,56 @@ public class UIManagerMain : MonoBehaviour {
 
     private void Awake()
     {
+        //inventario base
         panelBag = GameObject.Find("PanelBag");
         combatButton = GameObject.Find("Combat");
         bagButton = GameObject.Find("Bag");
-        fondoFood = GameObject.Find("FondoFoods");
-        speedText = GameObject.Find("Speed_Text").GetComponent<Text>();
-        hpText = GameObject.Find("Vida_Text").GetComponent<Text>();
-        defText = GameObject.Find("Defensa_Text").GetComponent<Text>();
-        atkText = GameObject.Find("Ataque_Text").GetComponent<Text>();
         feroxMenu = GameObject.Find("PanelFerox");
         feroxButton = GameObject.Find("Pet");
         optionsButton = GameObject.Find("Options");
         buttons = GameObject.Find("Buttons");
+        loadingPanel = GameObject.Find("LoadingPanel");
+
+        //Estadisticas menu
+        speedText = GameObject.Find("Speed_Text").GetComponent<Text>();
+        hpText = GameObject.Find("Vida_Text").GetComponent<Text>();
+        defText = GameObject.Find("Defensa_Text").GetComponent<Text>();
+        atkText = GameObject.Find("Ataque_Text").GetComponent<Text>();
         feroxEquip = GameObject.Find("FeroxEquipo");
         feroxStats = GameObject.Find("FeroxStats");
         feroxPedia = GameObject.Find("FeroxPedia");
+
+        //ferox Items
         meats = GameObject.Find("Meats");
         fruts = GameObject.Find("Fruts");
         drinks = GameObject.Find("Drinks");
         sweets = GameObject.Find("Sweets");
-        buttonsFoods = GameObject.Find("ButtosFoods");
+        soapsPanel = GameObject.Find("PanelSoaps");
+        foodsPanel = GameObject.Find("PanelFoods");
+        fondoFood = GameObject.Find("FondoFoods");
+        fondoSoaps = GameObject.Find("FondoSoaps");
+        soaps = GameObject.Find("Soapss");
+        medicine = GameObject.Find("Medicine");
+        
         //BARRAS REFERENCIA 
         healthBar = GameObject.Find("Health_Bar").GetComponent<Image>();
         happinessBar = GameObject.Find("Hapinness_Bar").GetComponent<Image>();
         hungryBar = GameObject.Find("Hungry_Bar").GetComponent<Image>();
         dirtBar = GameObject.Find("Dirt_Bar").GetComponent<Image>();
         energyBar = GameObject.Find("Energy_Bar").GetComponent<Image>();
+        
     }
     void Start()
     {
         panelBag.SetActive(false);
         player = GameObject.Find("Player").GetComponent<Player>();
         feroxMenu.SetActive(false);
-        fondoFood.SetActive(false);
-        buttonsFoods.SetActive(false);
-        atkText.text = player.GetAtk().ToString();
-        speedText.text = player.GetSpeed().ToString();
-        defText.text = player.GetDef().ToString();
-        hpText.text = player.GetHp().ToString();
+        soapsPanel.SetActive(false);
+        foodsPanel.SetActive(false);
+        atkText.text = player.GetAtk.ToString();
+        speedText.text = player.GetSpeed.ToString();
+        defText.text = player.GetDef.ToString();
+        hpText.text = player.GetHp.ToString();
         arrayFeroxMenu[0] = feroxStats;
         arrayFeroxMenu[1] = feroxEquip;
         arrayFeroxMenu[2] = feroxPedia;
@@ -103,6 +122,8 @@ public class UIManagerMain : MonoBehaviour {
         arrayFoods[1] = fruts;
         arrayFoods[2] = drinks;
         arrayFoods[3] = sweets;
+        arraySoaps[0] = soaps;
+        arraySoaps[1] = medicine;
     }
 
 
@@ -123,26 +144,37 @@ public class UIManagerMain : MonoBehaviour {
         panelBag.SetActive(openbag);
         combatButton.SetActive(false);
         bagButton.SetActive(false);
-        fondoFood.SetActive(true);
-        buttonsFoods.SetActive(true);
+        foodsPanel.SetActive(true);
         ChageTipeFood(0);
     }
 
-    public void NumFoodSelec(int chage)
+    public void Soaps()
     {
-        numFood = numFood + chage;
-
-        if (numFood > 4)
-        {
-            numFood = 0;
-        }
+        openbag = false;
+        panelBag.SetActive(openbag);
+        combatButton.SetActive(false);
+        bagButton.SetActive(false);
+        soapsPanel.SetActive(true);
+        ChageTipeSoaps(1);
     }
+
+    public void ChageTipeSoaps(int tipes)
+    {
+        soapsSelec = tipes;
+        for (int i = 0; i < arraySoaps.Length; i++)
+        {
+            arraySoaps[i].SetActive(false);
+        }
+        arraySoaps[soapsSelec].SetActive(true);
+       fondoSoaps.GetComponent<ScrollRect>().content = arraySoaps[soapsSelec].GetComponent<RectTransform>();
+    }
+    
 
     public void Eat()
     {
         combatButton.SetActive(true);
         bagButton.SetActive(true);
-        fondoFood.SetActive(false);
+        foodsPanel.SetActive(false);
     }
 
     public void FeroxPanel()
@@ -170,11 +202,11 @@ public class UIManagerMain : MonoBehaviour {
 
     public void BarsUpdate()
     {
-        healthCur = player.GetHealt();
-        energyCur = player.GetEnergy();
-        happinessCur = player.GetHappines();
-        dirtCur = player.Getdirt();
-        hungryCur = player.GetHungry();
+        healthCur = player.GetHealt;
+        energyCur = player.GetEnergy;
+        happinessCur = player.GetHappines;
+        dirtCur = player.Getdirt;
+        hungryCur = player.GetHungry;
         energyBar.fillAmount = energyCur / energy;
         healthBar.fillAmount = healthCur / healthTo;
         dirtBar.fillAmount = dirtCur / dirt; 
@@ -191,7 +223,5 @@ public class UIManagerMain : MonoBehaviour {
         }
         arrayFoods[footSelec].SetActive(true);
         fondoFood.GetComponent<ScrollRect>().content = arrayFoods[footSelec].GetComponent<RectTransform>();
-
-
     }    
 }
